@@ -22,6 +22,15 @@ class Department {
       throw error;
     }
   }
+
+  async deleteDepartment(departmentId) {
+    try {
+      await this.connection.query('DELETE FROM department WHERE id = ?', [departmentId]);
+      console.log('Department deleted successfully.');
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = Department;

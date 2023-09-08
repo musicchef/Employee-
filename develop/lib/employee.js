@@ -31,6 +31,15 @@ class Employee {
       throw error;
     }
   }
+
+  async deleteEmployee(employeeId) {
+    try {
+      await this.connection.query('DELETE FROM employee WHERE id = ?', [employeeId]);
+      console.log('Employee deleted successfully.');
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = Employee;

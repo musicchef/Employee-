@@ -73,40 +73,66 @@ async function startApp() {
         console.log('Employee added successfully.');
         break;
 
-      case 'View all roles':
-        const allRoles = await role.getAllRoles();
-        console.table(allRoles);
+        case 'Delete an employee':
+            const employeeToDelete = await inquirer.prompt([
+              {
+                type: 'list',
+                name: 'employee_id',
+                message: 'Select the employee to delete:',
+                choices: employees.map((employee) => ({ name: `${employee.first_name} ${employee.last_name}`, value: employee.id })),
+              },
+            ]);
+            await employee.deleteEmployee(employeeToDelete.employee_id);
+            console.log('Employee deleted successfully.');
+            break;
+            
+        case 'View all roles':
+            const allRoles = await role.getAllRoles();
+            console.table(allRoles);
         break;
 
-      case 'Add a role':
-        const roleData = await inquirer.prompt([
-          {
-            type: 'input',
-            name: 'title',
-            message: 'Enter the role title:',
-          },
-          {
-            type: 'input',
-            name: 'salary',
-            message: 'Enter the role salary:',
-          },
-          {
-            type: 'list',
-            name: 'department_id',
-            message: 'Select the department for this role:',
-            choices: departments.map((department) => ({ name: department.name, value: department.id })),
-          },
-        ]);
+        case 'Add a role':
+            const roleData = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the role title:',
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Enter the role salary:',
+            },
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Select the department for this role:',
+                choices: departments.map((department) => ({ name: department.name, value: department.id })),
+            },
+            ]);
         await role.addRole(roleData.title, roleData.salary, roleData.department_id);
         console.log('Role added successfully.');
         break;
 
-      case 'View all departments':
+        case 'Delete a role':
+            const roleToDelete = await inquirer.prompt([
+              {
+                type: 'list',
+                name: 'role_id',
+                message: 'Select the role to delete:',
+                choices: roles.map((role) => ({ name: role.title, value: role.id })),
+              },
+            ]);
+            await role.deleteRole(roleToDelete.role_id);
+            console.log('Role deleted successfully.');
+            break;
+
+    case 'View all departments':
         const allDepartments = await department.getAllDepartments();
         console.table(allDepartments);
         break;
 
-      case 'Add a department':
+    case 'Add a department':
         const departmentData = await inquirer.prompt([
           {
             type: 'input',
@@ -118,7 +144,20 @@ async function startApp() {
         console.log('Department added successfully.');
         break;
 
-      case 'Exit':
+    case 'Delete a department':
+        const departmentToDelete = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Select the department to delete:',
+                choices: departments.map((department) => ({ name: department.name, value: department.id })),
+            },
+        ]);
+            await department.deleteDepartment(departmentToDelete.department_id);
+            console.log('Department deleted successfully.');
+        break;
+
+    case 'Exit':
         console.log('Goodbye!');
         return;
     }

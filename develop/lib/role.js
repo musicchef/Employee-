@@ -22,6 +22,15 @@ class Role {
       throw error;
     }
   }
+ 
+  async deleteRole(roleId) {
+    try {
+      await this.connection.query('DELETE FROM role WHERE id = ?', [roleId]);
+      console.log('Role deleted successfully.');
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = Role;
